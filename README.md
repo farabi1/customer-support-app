@@ -1,50 +1,63 @@
 # CS — Ticket System
 
-A customer support ticket management app built with React and Vite. You can view customer issues, add them to a task panel, and mark them as complete.
+A comprehensive customer support ticket management application built with React and Vite. It provides real-time ticket queue management, active task status triage, responsive multi-platform views, and full issue lifecycle tracking.
 
 ## Live Demo
 
 [https://customer-support-app-one.vercel.app](https://customer-support-app-one.vercel.app)
 
-GitHub: [farabi1/customer-support-app](https://github.com/farabi1/customer-support-app)
+GitHub Repository: [farabi1/customer-support-app](https://github.com/farabi1/customer-support-app)
 
 ---
 
-## Features
+## Key Features
 
-- View all customer support tickets in a 2-column card layout
-- Each card shows the ticket title, description, priority, status, customer name and date
-- Click a card to add it to the Task Status panel — the In-Progress count goes up
-- Click the Complete button to resolve a ticket — it disappears from the grid and moves to the Resolved section
-- Toast notifications on every action using react-toastify
-- Responsive layout for mobile and desktop
+- **Live Ticket Dashboard**: 2-column card grid displaying real customer support tickets with status, priority, customer details, and timestamp.
+- **Interactive Search & Priority Filter**: Real-time keyword search across tickets, customer names, and IDs, paired with a priority filter (High, Medium, Low).
+- **Task Status Panel**: Click any ticket card to assign it to your active queue, updating live In-Progress metric counters in the hero banner.
+- **Task Completion Workflow**: Mark tasks complete to remove them from the active queue, record them in the Resolved section, and increment the resolved counter.
+- **New Ticket Creation Modal**: Accessible dialog with client-side form validation to submit tickets that prepend immediately to the live queue.
+- **Help & FAQ Section**: Interactive accordion with category filtering and instant search for support questions and triage guidelines.
+- **Release Changelog**: Chronological release notes timeline (v1.3.0 through v1.0.0) with category badges (Feature, Improvement, Fix, Security).
+- **Support Engineering Blog**: Curated industry guides, triage frameworks, and best practices with a modal reader.
+- **Cross-Platform Download Center**: Native app downloads for Windows, macOS, Linux, and Mobile with dynamic release manifest generation and CLI setup instructions.
+- **Direct Contact Portal**: Support form with category routing, email copy tool, business hours, and SLA response guarantees.
+- **Responsive Navigation**: Smooth mobile drawer navigation powered by an animated hamburger icon for screen widths under 768px.
+- **Toast Notifications**: Real-time feedback alerts for creation, assignment, resolution, and clipboard actions via `react-toastify`.
 
 ---
 
 ## Tech Stack
 
-- React 19
-- Vite
-- Vanilla CSS
-- react-toastify
-- JSON for ticket data
+- **Framework**: React 19
+- **Build Tool**: Vite 8
+- **Styling**: Modern CSS with CSS custom properties and flex/grid responsive design
+- **Notifications**: React-Toastify
+- **Data Source**: Structured JSON ticket database
 
 ---
 
-## Project Structure
+## Project Architecture
 
 ```
 src/
   components/
-    Navbar.jsx
-    HeroBanner.jsx
-    TicketCard.jsx
-    TaskStatusPanel.jsx
-    Footer.jsx
+    Navbar.jsx             # Top bar with clean tab routing and animated mobile hamburger
+    HeroBanner.jsx         # Live metric counter cards (In-Progress & Resolved)
+    TicketCard.jsx         # Accessible ticket card with priority badges and metadata
+    TaskStatusPanel.jsx    # Sidebar task tracker with completion progression
+    NewTicketModal.jsx     # Validated ticket creation modal
+    FAQSection.jsx         # Searchable FAQ accordion with category chips
+    ChangelogSection.jsx   # Timeline of version history and improvements
+    BlogSection.jsx        # Support guides and articles with reader modal
+    DownloadSection.jsx    # Cross-platform download center with installer manifests
+    ContactSection.jsx     # Direct contact form and support availability details
+    Footer.jsx             # Footer with direct navigation and contact details
   data/
-    tickets.json
-  App.jsx
-  index.css
+    tickets.json           # Realistic support inquiries and ticket records
+  App.jsx                  # Main application state, search, and page routing
+  index.css                # Global design system, typography, and responsive styles
+  main.jsx                 # Application entry point
 ```
 
 ---
@@ -52,23 +65,33 @@ src/
 ## Running Locally
 
 ```bash
+# Clone the repository
 git clone https://github.com/farabi1/customer-support-app.git
+
+# Navigate to project directory
 cd customer-support-app
+
+# Install dependencies
 npm install
+
+# Start local development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
 ---
 
-## Ticket Data
+## Ticket Schema
 
-Tickets are stored in `src/data/tickets.json`. Each ticket has:
+Tickets are stored and managed with the following structure:
 
 ```json
 {
   "id": "#1001",
   "title": "Login Issues - Can't Access Account",
-  "description": "...",
+  "description": "Customer is unable to log in to their account. They've tried resetting their password multiple times but still can't access their account.",
   "customer": "John Smith",
   "priority": "HIGH",
   "status": "Open",
@@ -78,88 +101,83 @@ Tickets are stored in `src/data/tickets.json`. Each ticket has:
 
 ---
 
-## React Q&A
+## React Concepts & Implementation Q&A
 
 ### What is JSX, and why is it used?
 
-JSX stands for JavaScript XML. It lets you write HTML-like code inside JavaScript. Instead of calling `React.createElement()` for every element, you can just write `<h1>Hello</h1>` directly in your JS file. It makes the code much easier to read and write, and you can still use JavaScript expressions inside `{}`.
+JSX stands for JavaScript XML. It is a syntax extension for JavaScript that allows you to write markup directly within your component logic. Instead of imperatively constructing DOM nodes using `React.createElement()` or `document.createElement()`, JSX enables declarative UI definitions that closely match HTML while preserving the full expressive power of JavaScript.
 
 ```jsx
-const element = <h1 className="title">Hello!</h1>
+const element = <h1 className="title">Support Queue</h1>
 ```
 
-Babel converts this to regular JavaScript behind the scenes when you build the project.
+Vite/Babel compiles JSX into standard JavaScript function calls during the build process, resulting in cleaner, more maintainable component structures.
 
 ---
 
 ### What is the difference between State and Props?
 
-**Props** are values passed into a component from its parent. You can read them but not change them inside the child component.
-
-**State** is data that lives inside a component and can change over time. When state changes, React re-renders the component.
-
-```jsx
-// title and priority come from props (passed by parent)
-function TicketCard({ title, priority }) {
-  // selected is state — this component owns it
-  const [selected, setSelected] = useState(false)
-
-  return <div onClick={() => setSelected(true)}>{title}</div>
-}
-```
-
-The main difference is ownership. Props are owned by the parent, state is owned by the component itself.
-
----
-
-### What is the useState hook, and how does it work?
-
-`useState` is a built-in React hook that lets you add state to a functional component. You call it with an initial value and it gives you back the current value and a function to update it.
+- **Props** (short for properties) are read-only inputs passed from a parent component down to a child component. They allow components to be reusable and configurable from the outside. A component must never modify its own props.
+- **State** is mutable data managed internally by a component. When state values update via setter functions, React triggers a re-render of the component and its children to reflect the latest values in the DOM.
 
 ```jsx
-const [count, setCount] = useState(0)
-```
-
-Every time you call `setCount`, React re-renders the component with the new value. In this project I used useState three times in App.jsx — one for the tickets list, one for the task items, and one for resolved items.
-
----
-
-### How can you share state between components in React?
-
-You lift the state up to the nearest common parent and pass it down as props. For example in this project, `App.jsx` owns all the state. It passes the ticket list to `TicketCard` and the task items to `TaskStatusPanel`. When a card is clicked, the function passed as a prop updates the state in App, which causes both components to re-render.
-
-```jsx
-function App() {
-  const [taskItems, setTaskItems] = useState([])
-
-  function handleClick(ticket) {
-    setTaskItems(prev => [...prev, ticket])
-  }
+// Priority and status are passed down as Props
+function TicketCard({ ticket, onSelect }) {
+  // isHovered is internal component State
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <>
-      <TicketCard onClick={handleClick} />
-      <TaskStatusPanel taskItems={taskItems} />
-    </>
+    <article
+      className={`card ${isHovered ? 'card--hover' : ''}`}
+      onClick={() => onSelect(ticket.id)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <h3>{ticket.title}</h3>
+      <span>{ticket.priority}</span>
+    </article>
   )
 }
 ```
 
 ---
 
-### How is event handling done in React?
+### What is the `useState` hook, and how does it work?
 
-In React you attach event handlers directly on JSX elements using camelCase names like `onClick`, `onChange`, `onSubmit`. You pass a function reference, not a string like in HTML.
+`useState` is React's fundamental Hook for declaring local state variables in functional components. It takes an initial value and returns an array containing exactly two elements: the current state value, and an updater function.
 
 ```jsx
-// HTML way
-<button onclick="doSomething()">Click</button>
-
-// React way
-<button onClick={doSomething}>Click</button>
-
-// With arguments
-<button onClick={() => handleComplete(ticket.id)}>Complete</button>
+const [tickets, setTickets] = useState(initialTickets)
 ```
 
-React wraps the browser's native events in a SyntheticEvent so they work the same across all browsers.
+Calling the updater function schedules a re-render with the new state. When updating based on previous state values (such as prepending or filtering lists), using the callback form `setTickets(prev => [...prev, newTicket])` guarantees access to the most up-to-date state snapshot.
+
+---
+
+### How can you share state between components in React?
+
+State is shared across components by **lifting state up** to their closest common ancestor. The ancestor component holds the state and provides both the current state data (via props) and callback functions (via props) to child components.
+
+In this project, `App.jsx` manages the global ticket queue, the in-progress list, and the resolved items. It passes the data down to `TicketCard`, `TaskStatusPanel`, and `HeroBanner`, while passing callback handlers (`handleTicketClick`, `handleComplete`) so child interactions propagate back up to synchronize state across the whole interface.
+
+---
+
+### How is event handling done in React?
+
+Event handling in React utilizes camelCase prop conventions (such as `onClick`, `onChange`, `onSubmit`, `onKeyDown`) rather than lowercase HTML attributes. Instead of passing strings, you pass actual JavaScript functions.
+
+React wraps native browser events in a cross-browser `SyntheticEvent` system, providing consistent behavior across Safari, Chrome, Firefox, and Edge.
+
+```jsx
+// Form submission with validation and event prevention
+function handleFormSubmit(e) {
+  e.preventDefault()
+  if (!title.trim()) return
+  onSubmit({ title })
+}
+
+<form onSubmit={handleFormSubmit}>
+  <input value={title} onChange={(e) => setTitle(e.target.value)} />
+  <button type="submit">Submit Ticket</button>
+</form>
+```
