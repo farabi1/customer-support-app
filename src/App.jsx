@@ -8,36 +8,51 @@ import HeroBanner from './components/HeroBanner'
 import TicketCard from './components/TicketCard'
 import TaskStatusPanel from './components/TaskStatusPanel'
 import NewTicketModal from './components/NewTicketModal'
+import FAQSection from './components/FAQSection'
+import ChangelogSection from './components/ChangelogSection'
+import BlogSection from './components/BlogSection'
+import DownloadSection from './components/DownloadSection'
+import ContactSection from './components/ContactSection'
 import Footer from './components/Footer'
 
 import ticketsData from './data/tickets.json'
 
 function App() {
+  const [activePage, setActivePage] = useState('home')
   const [tickets, setTickets] = useState(ticketsData)
   const [taskItems, setTaskItems] = useState([])
   const [resolvedItems, setResolvedItems] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [searchTicket, setSearchTicket] = useState('')
+  const [filterPriority, setFilterPriority] = useState('ALL')
 
   const addedIds = new Set([
     ...taskItems.map((t) => t.id),
     ...resolvedItems.map((t) => t.id),
   ])
 
+  function handleNavigate(page) {
+    setActivePage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   function handleNewTicket(formData) {
+    const newId = `#${1013 + tickets.length + resolvedItems.length}`
     const newTicket = {
-      id: `#${1013 + tickets.length}`,
+      id: newId,
       title: formData.title,
       description: formData.description,
       customer: formData.customer,
       priority: formData.priority,
-      status: formData.status,
+      status: formData.status || 'Open',
       createdAt: new Date().toISOString().split('T')[0],
     }
 
     setTickets((prev) => [newTicket, ...prev])
     setShowModal(false)
+    setActivePage('home')
 
-    toast.success('New ticket created!', {
+    toast.success(`Ticket ${newId} created successfully!`, {
       position: 'top-right',
       autoClose: 3000,
     })
@@ -74,11 +89,29 @@ function App() {
     })
   }
 
+  // Filtered tickets on Home page
+  const displayedTickets = tickets.filter((t) => {
+    const matchesSearch =
+      t.title.toLowerCase().includes(searchTicket.toLowerCase()) ||
+      t.description.toLowerCase().includes(searchTicket.toLowerCase()) ||
+      t.customer.toLowerCase().includes(searchTicket.toLowerCase()) ||
+      t.id.toLowerCase().includes(searchTicket.toLowerCase())
+
+    const matchesPriority =
+      filterPriority === 'ALL' || t.priority === filterPriority
+
+    return matchesSearch && matchesPriority
+  })
+
   return (
-    <>
+    <div className="app-layout">
       <ToastContainer />
 
-      <Navbar onNewTicket={() => setShowModal(true)} />
+      <Navbar
+        activePage={activePage}
+        onNavigate={handleNavigate}
+        onNewTicket={() => setShowModal(true)}
+      />
 
       {showModal && (
         <NewTicketModal
@@ -87,48 +120,114 @@ function App() {
         />
       )}
 
-      <HeroBanner
-        inProgressCount={taskItems.length}
-        resolvedCount={resolvedItems.length}
-      />
+      {/* View routing: Home | FAQ | Changelog | Blog | Download | Contact */}
+      {activePage === 'home' && (
+        <>
+          <HeroBanner
+            inProgressCount={taskItems.length}
+            resolvedCount={resolvedItems.length}
+          />
 
-      <main className="main-content">
-        <div className="container">
-          <div className="content-grid">
+          <main className="main-content">
+            <div className="container">
+              <div className="content-grid">
+                <section>
+                  <div className="tickets-section-header">
+                    <div>
+                      <h2 className="section-title">Customer Tickets</h2>
+                      <p className="section-subtitle">
+                        Click a ticket card to assign it to your active task queue.
+                      </p>
+                    </div>
 
-            <section>
-              <h2 className="section-title">Customer Tickets</h2>
+                    <div className="tickets-controls">
+                      <input
+                        type="text"
+                        className="tickets-search-input"
+                        placeholder="Search tickets, customers, #id..."
+                        value={searchTicket}
+                        onChange={(e) => setSearchTicket(e.target.value)}
+                      />
 
-              {tickets.length === 0 ? (
-                <div className="tickets-empty">
-                  <p>All tickets have been resolved!</p>
-                </div>
-              ) : (
-                <div className="tickets-list">
-                  {tickets.map((ticket) => (
-                    <TicketCard
-                      key={ticket.id}
-                      ticket={ticket}
-                      isSelected={addedIds.has(ticket.id)}
-                      onClick={() => handleTicketClick(ticket)}
-                    />
-                  ))}
-                </div>
-              )}
-            </section>
+                      <select
+                        className="tickets-filter-select"
+                        value={filterPriority}
+                        onChange={(e) => setFilterPriority(e.target.value)}
+                      >
+                        <option value="ALL">All Priorities</option>
+                        <option value="HIGH">High Priority</option>
+                        <option value="MEDIUM">Medium Priority</option>
+                        <option value="LOW">Low Priority</option>
+                      </select>
+                    </div>
+                  </div>
 
-            <TaskStatusPanel
-              taskItems={taskItems}
-              resolvedItems={resolvedItems}
-              onComplete={handleComplete}
-            />
+                  {displayedTickets.length === 0 ? (
+                    <div className="tickets-empty">
+                      {tickets.length === 0 ? (
+                        <p>All tickets have been resolved!</p>
+                      ) : (
+                        <p>No tickets match your current search and filter criteria.</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="tickets-list">
+                      {displayedTickets.map((ticket) => (
+                        <TicketCard
+                          key={ticket.id}
+                          ticket={ticket}
+                          isSelected={addedIds.has(ticket.id)}
+                          onClick={() => handleTicketClick(ticket)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </section>
 
-          </div>
-        </div>
-      </main>
+                <TaskStatusPanel
+                  taskItems={taskItems}
+                  resolvedItems={resolvedItems}
+                  onComplete={handleComplete}
+                />
+              </div>
+            </div>
+          </main>
+        </>
+      )}
 
-      <Footer />
-    </>
+      {activePage === 'faq' && (
+        <FAQSection
+          onNavigate={handleNavigate}
+          onNewTicket={() => setShowModal(true)}
+        />
+      )}
+
+      {activePage === 'changelog' && (
+        <ChangelogSection
+          onNavigate={handleNavigate}
+        />
+      )}
+
+      {activePage === 'blog' && (
+        <BlogSection
+          onNavigate={handleNavigate}
+        />
+      )}
+
+      {activePage === 'download' && (
+        <DownloadSection
+          onNavigate={handleNavigate}
+        />
+      )}
+
+      {activePage === 'contact' && (
+        <ContactSection
+          onNewTicketFromContact={handleNewTicket}
+        />
+      )}
+
+      <Footer onNavigate={handleNavigate} />
+    </div>
   )
 }
 
