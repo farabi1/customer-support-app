@@ -1,42 +1,48 @@
-function TaskStatusPanel({ taskItems, resolvedItems, onComplete }) {
+function TaskStatusPanel({ taskItems = [], resolvedItems = [], onComplete }) {
   return (
     <aside className="task-panel">
-      <h2 className="section-title">Task Status</h2>
+      {/* Active Tasks Section */}
+      <div className="task-panel__section">
+        <h2 className="task-panel__heading">Task Status</h2>
 
-      {taskItems.length === 0 ? (
-        <p className="task-panel__placeholder">
-          Select a ticket to add it to Task Status
-        </p>
-      ) : (
-        taskItems.map((ticket) => (
-          <div key={ticket.id} className="task-item">
-            <div className="task-item__info">
-              <span className="task-item__title">{ticket.title}</span>
-              <span className="task-item__customer">{ticket.customer}</span>
-            </div>
-            <button
-              type="button"
-              className="task-item__btn"
-              onClick={() => onComplete(ticket.id)}
-            >
-              Complete
-            </button>
+        {taskItems.length === 0 ? (
+          <p className="task-panel__placeholder">
+            Select a ticket to add to Task Status
+          </p>
+        ) : (
+          <div className="task-items-list">
+            {taskItems.map((ticket) => (
+              <div key={ticket.id} className="task-item-card">
+                <h3 className="task-item-title">{ticket.title}</h3>
+                <button
+                  type="button"
+                  className="btn-complete-task"
+                  onClick={() => onComplete(ticket.id)}
+                >
+                  Complete
+                </button>
+              </div>
+            ))}
           </div>
-        ))
-      )}
+        )}
+      </div>
 
-      <div className="task-panel__resolved-section">
-        <p className="task-panel__resolved-title">Resolved Task</p>
+      {/* Resolved Tasks Section */}
+      <div className="task-panel__section task-panel__resolved-section">
+        <h2 className="task-panel__heading">Resolved Task</h2>
 
         {resolvedItems.length === 0 ? (
-          <p className="task-panel__empty">No resolved tasks yet.</p>
+          <p className="task-panel__placeholder">
+            No resolved tasks yet.
+          </p>
         ) : (
-          resolvedItems.map((ticket) => (
-            <div key={ticket.id} className="resolved-item">
-              <span className="resolved-item__check">✓</span>
-              <span className="resolved-item__title">{ticket.title}</span>
-            </div>
-          ))
+          <div className="resolved-items-list">
+            {resolvedItems.map((ticket) => (
+              <div key={ticket.id} className="resolved-item-card">
+                <p className="resolved-item-title">{ticket.title}</p>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </aside>

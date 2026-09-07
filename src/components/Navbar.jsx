@@ -12,7 +12,6 @@ const navLinks = [
 function Navbar({ activePage = 'home', onNavigate, onNewTicket }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // Close mobile menu on resize to desktop
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth > 768) {
@@ -23,7 +22,6 @@ function Navbar({ activePage = 'home', onNavigate, onNewTicket }) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden'
@@ -57,36 +55,36 @@ function Navbar({ activePage = 'home', onNavigate, onNewTicket }) {
     <header className="navbar">
       <div className="container">
         <div className="navbar__inner">
+          {/* Brand on the left */}
           <button
             type="button"
             className="navbar__brand-btn"
             onClick={handleLogoClick}
           >
-            <span className="navbar__brand-icon">🎫</span>
             <span className="navbar__brand-text">CS — Ticket System</span>
           </button>
 
-          {/* Desktop Navigation Links */}
-          <nav className="navbar__nav-desktop" aria-label="Main navigation">
-            <ul className="navbar__links">
-              {navLinks.map((link) => {
-                const isActive = activePage === link.id
-                return (
-                  <li key={link.id}>
-                    <button
-                      type="button"
-                      className={`navbar__link ${isActive ? 'navbar__link--active' : ''}`}
-                      onClick={() => handleLinkClick(link.id)}
-                    >
-                      {link.label}
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
+          {/* Right section: Navigation items and New Ticket button */}
+          <div className="navbar__right-group">
+            <nav className="navbar__nav-desktop" aria-label="Main navigation">
+              <ul className="navbar__links">
+                {navLinks.map((link) => {
+                  const isActive = activePage === link.id
+                  return (
+                    <li key={link.id}>
+                      <button
+                        type="button"
+                        className={`navbar__link ${isActive ? 'navbar__link--active' : ''}`}
+                        onClick={() => handleLinkClick(link.id)}
+                      >
+                        {link.label}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
 
-          <div className="navbar__right">
             <button
               type="button"
               className="navbar__cta"
@@ -95,7 +93,7 @@ function Navbar({ activePage = 'home', onNavigate, onNewTicket }) {
               + New Ticket
             </button>
 
-            {/* Hamburger Menu Button */}
+            {/* Responsive Hamburger Toggle */}
             <button
               type="button"
               className={`navbar__hamburger ${menuOpen ? 'navbar__hamburger--open' : ''}`}
@@ -111,7 +109,7 @@ function Navbar({ activePage = 'home', onNavigate, onNewTicket }) {
         </div>
       </div>
 
-      {/* Mobile Menu Backdrop */}
+      {/* Mobile Drawer Backdrop */}
       {menuOpen && (
         <div
           className="navbar__mobile-backdrop"
@@ -126,7 +124,7 @@ function Navbar({ activePage = 'home', onNavigate, onNewTicket }) {
         aria-hidden={!menuOpen}
       >
         <div className="navbar__mobile-header">
-          <span className="navbar__mobile-title">Navigation</span>
+          <span className="navbar__mobile-title">CS — Ticket System</span>
           <button
             type="button"
             className="navbar__mobile-close"

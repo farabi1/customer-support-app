@@ -1,12 +1,10 @@
-# CS — Ticket System
+# Customer Support Zone (CS — Ticket System)
 
-A comprehensive customer support ticket management application built with React and Vite. It provides real-time ticket queue management, active task status triage, responsive multi-platform views, and full issue lifecycle tracking.
+A React-based Customer Support Zone designed to display customer tickets, track progress, and mark them as resolved according to Figma design specifications. Includes status management, responsive mobile hamburger navigation, and toast notifications using React-Toastify.
 
-## Live Demo
-
-[https://customer-support-app-one.vercel.app](https://customer-support-app-one.vercel.app)
-
-GitHub Repository: [farabi1/customer-support-app](https://github.com/farabi1/customer-support-app)
+## Submission Links
+- **Live Link**: [https://customer-support-app-one.vercel.app](https://customer-support-app-one.vercel.app)
+- **GitHub Repository**: [https://github.com/farabi1/customer-support-app](https://github.com/farabi1/customer-support-app)
 
 ---
 

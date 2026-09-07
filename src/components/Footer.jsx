@@ -1,26 +1,27 @@
 function Footer({ onNavigate }) {
   const companyLinks = [
-    { label: 'Home', action: () => onNavigate?.('home') },
-    { label: 'FAQ', action: () => onNavigate?.('faq') },
-    { label: 'Changelog', action: () => onNavigate?.('changelog') },
+    { label: 'About Us', action: () => onNavigate?.('home') },
+    { label: 'Our Mission', action: () => onNavigate?.('blog') },
+    { label: 'Contact Sales', action: () => onNavigate?.('contact') },
   ]
 
   const servicesLinks = [
-    { label: 'Ticket Queue', action: () => onNavigate?.('home') },
-    { label: 'Blog & Articles', action: () => onNavigate?.('blog') },
+    { label: 'Products & Services', action: () => onNavigate?.('home') },
+    { label: 'Customer Stories', action: () => onNavigate?.('blog') },
     { label: 'Download Apps', action: () => onNavigate?.('download') },
   ]
 
-  const supportLinks = [
-    { label: 'Contact Support', action: () => onNavigate?.('contact') },
-    { label: 'Frequently Asked', action: () => onNavigate?.('faq') },
-    { label: 'System Status', action: () => onNavigate?.('changelog') },
+  const informationLinks = [
+    { label: 'Privacy Policy', action: () => onNavigate?.('faq') },
+    { label: 'Terms & Conditions', action: () => onNavigate?.('faq') },
+    { label: 'Join Us', action: () => onNavigate?.('changelog') },
   ]
 
   const socialLinks = [
-    { icon: '𝕏', label: '@CSTicketApp' },
-    { icon: '💼', label: 'CS Ticket System' },
-    { icon: '🐙', label: 'github.com/farabi1' },
+    { icon: 'f', label: '@CS — Ticket System' },
+    { icon: 'in', label: '@CS — Ticket System' },
+    { icon: 'tw', label: '@CS — Ticket System' },
+    { icon: '✉', label: 'support@cst.com', isEmail: true },
   ]
 
   function handleClick(e, action) {
@@ -42,26 +43,16 @@ function Footer({ onNavigate }) {
               className="footer__brand-link"
               onClick={(e) => handleClick(e, () => onNavigate?.('home'))}
             >
-              <span className="footer__brand-icon">🎫</span>
               <span className="footer__brand">CS — Ticket System</span>
             </button>
             <p className="footer__desc">
               A modern customer support management platform engineered to streamline issue tracking, triage tickets efficiently, and help teams resolve customer problems faster.
             </p>
-            <div className="footer__contact-quick">
-              <span className="footer__email-icon">✉️</span>
-              <a
-                href="mailto:support@cst.com"
-                className="footer__email"
-              >
-                support@cst.com
-              </a>
-            </div>
           </div>
 
-          {/* Navigation Column */}
+          {/* Company Column */}
           <div>
-            <p className="footer__col-title">Navigation</p>
+            <p className="footer__col-title">Company</p>
             <ul className="footer__links">
               {companyLinks.map((item) => (
                 <li key={item.label}>
@@ -77,9 +68,9 @@ function Footer({ onNavigate }) {
             </ul>
           </div>
 
-          {/* Resources Column */}
+          {/* Services Column */}
           <div>
-            <p className="footer__col-title">Resources</p>
+            <p className="footer__col-title">Services</p>
             <ul className="footer__links">
               {servicesLinks.map((item) => (
                 <li key={item.label}>
@@ -95,11 +86,11 @@ function Footer({ onNavigate }) {
             </ul>
           </div>
 
-          {/* Support & Social Column */}
+          {/* Information Column */}
           <div>
-            <p className="footer__col-title">Help & Social</p>
-            <ul className="footer__links" style={{ marginBottom: '16px' }}>
-              {supportLinks.map((item) => (
+            <p className="footer__col-title">Information</p>
+            <ul className="footer__links">
+              {informationLinks.map((item) => (
                 <li key={item.label}>
                   <button
                     type="button"
@@ -111,37 +102,31 @@ function Footer({ onNavigate }) {
                 </li>
               ))}
             </ul>
+          </div>
 
+          {/* Social Links Column */}
+          <div>
+            <p className="footer__col-title">Social Links</p>
             <div className="footer__socials">
               {socialLinks.map((s) => (
-                <div key={s.label} className="footer__social-item">
+                <div key={s.label + s.icon} className="footer__social-item">
                   <span className="footer__social-icon">{s.icon}</span>
-                  <span className="footer__social-label">{s.label}</span>
+                  {s.isEmail ? (
+                    <a href="mailto:support@cst.com" className="footer__email-link">
+                      {s.label}
+                    </a>
+                  ) : (
+                    <span>{s.label}</span>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
+        {/* Centered copyright matching Figma */}
         <div className="footer__bottom">
-          <p>© {new Date().getFullYear()} CS — Ticket System. All rights reserved.</p>
-          <div className="footer__bottom-links">
-            <button
-              type="button"
-              className="footer__link-btn"
-              onClick={(e) => handleClick(e, () => onNavigate?.('faq'))}
-            >
-              Privacy &amp; Terms
-            </button>
-            <span className="footer__sep">•</span>
-            <button
-              type="button"
-              className="footer__link-btn"
-              onClick={(e) => handleClick(e, () => onNavigate?.('contact'))}
-            >
-              Security
-            </button>
-          </div>
+          <p>© 2025 CS — Ticket System. All rights reserved.</p>
         </div>
       </div>
     </footer>
