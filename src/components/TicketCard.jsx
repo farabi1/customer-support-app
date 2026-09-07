@@ -6,11 +6,7 @@ function TicketCard({ ticket, isSelected, onClick }) {
       ? 'priority--medium'
       : 'priority--low'
 
-  const statusClass =
-    ticket.status === 'Open' ? 'badge--open' : 'badge--inprogress'
-
-  const statusLabel =
-    ticket.status === 'In-Progress' ? 'In-Progress' : ticket.status
+  const statusClass = ticket.status === 'Open' ? 'badge--open' : 'badge--inprogress'
 
   const formattedDate = new Date(ticket.createdAt).toLocaleDateString('en-US', {
     month: 'short',
@@ -26,18 +22,14 @@ function TicketCard({ ticket, isSelected, onClick }) {
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
       aria-pressed={isSelected}
-      title={isSelected ? 'Already added to Task Status' : 'Click to add to Task Status'}
     >
-      {/* Card Header: title + status badge */}
       <div className="ticket-card__header">
         <h3 className="ticket-card__title">{ticket.title}</h3>
-        <span className={`badge ${statusClass}`}>{statusLabel}</span>
+        <span className={`badge ${statusClass}`}>{ticket.status}</span>
       </div>
 
-      {/* Description */}
       <p className="ticket-card__desc">{ticket.description}</p>
 
-      {/* Footer metadata */}
       <div className="ticket-card__footer">
         <div className="ticket-card__meta">
           <span className="ticket-card__id">{ticket.id}</span>

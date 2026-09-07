@@ -3,7 +3,6 @@ function TaskStatusPanel({ taskItems, resolvedItems, onComplete }) {
     <aside className="task-panel">
       <h2 className="section-title">Task Status</h2>
 
-      {/* ── Active Tasks ───────────────────────────────────────── */}
       {taskItems.length === 0 ? (
         <p className="task-panel__placeholder">
           Select a ticket to add it to Task Status
@@ -26,7 +25,6 @@ function TaskStatusPanel({ taskItems, resolvedItems, onComplete }) {
         ))
       )}
 
-      {/* ── Resolved Section ───────────────────────────────────── */}
       <div className="task-panel__resolved-section">
         <p className="task-panel__resolved-title">Resolved Task</p>
 
