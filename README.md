@@ -6,7 +6,9 @@ A customer support ticket management web application built with **React** and **
 
 ## 🚀 Live Demo
 
-> _Live link will be added after Vercel deployment_
+🔗 **[https://customer-support-app-one.vercel.app](https://customer-support-app-one.vercel.app)**
+
+> GitHub Repository: [farabi1/customer-support-app](https://github.com/farabi1/customer-support-app)
 
 ---
 
