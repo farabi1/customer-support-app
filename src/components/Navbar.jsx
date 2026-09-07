@@ -1,4 +1,4 @@
-function Navbar() {
+function Navbar({ onNewTicket }) {
   const links = ['Home', 'FAQ', 'Changelog', 'Blog', 'Download', 'Contact']
 
   return (
@@ -17,7 +17,7 @@ function Navbar() {
             ))}
           </ul>
 
-          <button type="button" className="navbar__cta">
+          <button type="button" className="navbar__cta" onClick={onNewTicket}>
             New Ticket
           </button>
         </div>
